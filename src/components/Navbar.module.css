@@ -1,0 +1,131 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    backdrop-filter 0.4s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.scrolled {
+  background: rgba(7, 10, 16, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--line);
+}
+
+.inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: 18px var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  margin-right: auto;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.links {
+  display: flex;
+  gap: 30px;
+}
+
+.link {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  position: relative;
+  transition: color 0.25s ease;
+}
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link:hover {
+  color: var(--text);
+}
+.link:hover::after {
+  transform: scaleX(1);
+}
+
+.cta {
+  padding: 10px 20px;
+  font-size: 0.88rem;
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px;
+}
+.burger span {
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+.barTop {
+  transform: translateY(7px) rotate(45deg);
+}
+.barMid {
+  opacity: 0;
+}
+.barBot {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px) {
+  /* `.nav .cta` (0,2,0) beats the global `.btn` display rule (0,1,0). */
+  .nav .cta {
+    display: none;
+  }
+  .burger {
+    display: flex;
+  }
+  .links {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(320px, 82vw);
+    flex-direction: column;
+    justify-content: center;
+    gap: 34px;
+    padding: 0 40px;
+    background: var(--bg-elev);
+    border-left: 1px solid var(--line);
+    transform: translateX(100%);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .linksOpen {
+    transform: translateX(0);
+  }
+  .link {
+    font-size: 1.4rem;
+    color: var(--text);
+  }
+}
