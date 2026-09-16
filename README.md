@@ -7,7 +7,7 @@ brand. Built as a take-home for the Truckinzy Full-Stack Developer Intern assign
 
 ![Hero](docs/hero.png)
 
-> Live demo: _add your Vercel URL here after deploying_
+> Live demo: https://assignment-website-one.vercel.app/
 
 ---
 
