@@ -1,0 +1,159 @@
+.fleet {
+  position: relative;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  padding-block: 90px;
+}
+
+.header {
+  margin-bottom: clamp(40px, 6vw, 70px);
+}
+.header .eyebrow {
+  margin-bottom: 18px;
+}
+
+.viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  gap: 26px;
+  padding-inline: var(--gutter);
+  width: max-content;
+  will-change: transform;
+}
+
+.card {
+  position: relative;
+  flex: 0 0 auto;
+  width: min(360px, 78vw);
+  height: 440px;
+  padding: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--surface), var(--bg-elev));
+  display: flex;
+  flex-direction: column;
+  transition:
+    border-color 0.4s ease,
+    transform 0.4s ease;
+}
+.card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-6px);
+}
+
+.cardId {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.cardVisual {
+  flex: 1;
+  margin: 20px 0;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(120% 120% at 20% 0%, rgba(76, 201, 240, 0.14), transparent 55%),
+    radial-gradient(120% 120% at 100% 100%, rgba(255, 106, 44, 0.16), transparent 55%),
+    var(--bg);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* animated "signal" dot standing in for a live-tracked asset */
+.pulse {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: relative;
+}
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  animation: ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+.cardName {
+  font-size: 1.35rem;
+  margin-bottom: 6px;
+}
+.cardSpec {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+}
+.cardMetric {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+.cardMetric span {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--text);
+  margin-right: 6px;
+}
+
+.endCard {
+  flex: 0 0 auto;
+  width: min(420px, 82vw);
+  height: 440px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 26px;
+  padding: 40px;
+}
+.endText {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.1;
+}
+
+@media (max-width: 640px) {
+  .card {
+    height: 400px;
+  }
+}
+
+/* Reduced motion: no pinned scroll-jack, so make the track a normal
+   horizontally-scrollable strip with snap points. */
+@media (prefers-reduced-motion: reduce) {
+  .fleet {
+    min-height: auto;
+  }
+  .viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .card,
+  .endCard {
+    scroll-snap-align: start;
+  }
+}
