@@ -1,0 +1,192 @@
+.services {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  background: var(--bg-elev);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: clamp(30px, 6vw, 90px);
+  align-items: center;
+  width: 100%;
+  padding-block: 80px;
+}
+
+/* ---------- left rail ---------- */
+.rail {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navItem {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  opacity: 0.4;
+  transition:
+    opacity 0.4s ease,
+    padding-left 0.4s ease;
+}
+.navItem:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.navActive {
+  opacity: 1;
+  padding-left: 10px;
+}
+
+.navNum {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.navTag {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.progress {
+  height: 2px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progressBar {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left;
+  transform: scaleX(0.33);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- right stage ---------- */
+.stage {
+  position: relative;
+  min-height: 420px;
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  opacity: 0; /* JS/GSAP reveals these; first panel shown by default below */
+}
+.panel:first-child {
+  opacity: 1;
+}
+
+.ghost {
+  position: absolute;
+  top: -70px;
+  right: -10px;
+  font-family: var(--font-display);
+  font-size: clamp(9rem, 22vw, 17rem);
+  font-weight: 600;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.06);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tag {
+  position: relative;
+  z-index: 1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  max-width: 18ch;
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  max-width: 52ch;
+}
+
+.points {
+  position: relative;
+  z-index: 1;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+.points li {
+  padding: 8px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  font-size: 0.86rem;
+  color: var(--text);
+}
+.points li::before {
+  content: '↳ ';
+  color: var(--accent);
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .stage {
+    min-height: 460px;
+  }
+  .ghost {
+    top: -50px;
+  }
+}
+
+/* Reduced motion: the section isn't pinned (no ScrollTrigger is created), so
+   un-stack the panels into a readable vertical list instead of overlapping. */
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    min-height: auto;
+  }
+  .panel {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    padding-block: 40px 60px;
+    border-bottom: 1px solid var(--line);
+  }
+  .panel:last-child {
+    border-bottom: none;
+  }
+  .ghost {
+    display: none;
+  }
+}
