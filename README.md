@@ -68,35 +68,7 @@ src/
   styles/
     index.css            # design tokens, reset, utilities
 ```
-
-## Deployment (Vercel)
-
-Vercel auto-detects Vite — no config needed.
-
-```bash
-npm i -g vercel
-vercel            # follow prompts (Framework: Vite, Build: npm run build, Output: dist)
-vercel --prod
-```
-
-Or import the GitHub repo at [vercel.com/new](https://vercel.com/new) and deploy with defaults.
-Netlify works too: build command `npm run build`, publish directory `dist`.
-
-## Performance
-
-Measured with Lighthouse (desktop preset) against the production build:
-
-| Metric                   | Value     |
-| ------------------------ | --------- |
-| Largest Contentful Paint | **0.7 s** |
-| Cumulative Layout Shift  | **0.009** |
-| Best Practices           | **100**   |
-| Accessibility            | **93**    |
-
-See `WRITEUP.md` for the full performance discussion (including the Total Blocking Time
-caveat under software rendering).
-
 ## Notes
 
 FreightCore Logistics is a **fictional brand** built purely for this assignment. All copy,
-stats and "freight lanes" are illustrative.
+stats, and "freight lanes" are illustrative.
