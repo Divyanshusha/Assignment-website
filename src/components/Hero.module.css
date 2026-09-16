@@ -1,0 +1,115 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-block: 120px 60px;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.canvas > * {
+  width: 100%;
+  height: 100%;
+}
+
+/* faint blueprint grid behind content */
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 20%, transparent 75%);
+  opacity: 0.5;
+}
+
+.content {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+}
+
+.title {
+  font-size: clamp(2.8rem, 9vw, 6rem);
+  margin: 22px 0 26px;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+}
+
+.reveal {
+  display: inline-block;
+  will-change: transform;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.sub {
+  max-width: 52ch;
+  color: var(--text-muted);
+  font-size: clamp(1.02rem, 1.6vw, 1.28rem);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 38px;
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.cueLine {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(var(--accent), transparent);
+  animation: cue 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+
+@keyframes cue {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .scrollCue {
+    display: none;
+  }
+  /* Nudge the globe up so it frames behind the headline on tall phones. */
+  .canvas {
+    top: -8%;
+  }
+}
