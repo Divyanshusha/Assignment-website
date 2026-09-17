@@ -1,0 +1,29 @@
+.dot,
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  border-radius: 50%;
+  /* Hidden until the first pointer move so nothing flashes in the corner. */
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: var(--accent);
+}
+
+.ring {
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border: 1.5px solid var(--accent-2);
+  /* Reads clearly over both the dark surfaces and the bright accents. */
+  mix-blend-mode: difference;
+}

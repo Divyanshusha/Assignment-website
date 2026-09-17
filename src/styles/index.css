@@ -190,6 +190,14 @@ img {
   color: var(--accent);
 }
 
+/* Custom cursor: hide the native one only while the JS cursor is mounted
+   (the .custom-cursor class is toggled on <html> by the Cursor component, so
+   touch / reduced-motion users always keep their normal OS cursor). */
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none !important;
+}
+
 /* Accessibility: respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -1,0 +1,19 @@
+.wrap {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+}
+
+.truck {
+  width: min(70%, 620px);
+  height: auto;
+  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.45));
+}
+
+.road {
+  stroke: var(--line-strong);
+  stroke-width: 2;
+  stroke-dasharray: 10 8;
+}

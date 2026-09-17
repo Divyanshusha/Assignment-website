@@ -80,6 +80,50 @@ export default function Fleet() {
       })
     })
 
+    // Pointer-tilt is a large-pointer, large-screen nicety only. Gating it here
+    // with matchMedia (rather than a manual window.innerWidth check) means GSAP
+    // tears the listeners down automatically below the breakpoint or under
+    // reduced motion — where the CSS :hover lift takes over instead.
+    mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
+      const cards = gsap.utils.toArray(`.${styles.card}`)
+      const cleanups = []
+
+      cards.forEach((card) => {
+        gsap.set(card, { transformPerspective: 800 })
+        const rotX = gsap.quickTo(card, 'rotationX', { duration: 0.5, ease: 'power3' })
+        const rotY = gsap.quickTo(card, 'rotationY', { duration: 0.5, ease: 'power3' })
+        // GSAP owns the whole transform while hovering (lift included), so it
+        // never clashes with the CSS translateY hover.
+        const yTo = gsap.quickTo(card, 'y', { duration: 0.5, ease: 'power3' })
+
+        const onEnter = () => yTo(-6)
+        const onMove = (e) => {
+          const r = card.getBoundingClientRect()
+          const px = (e.clientX - r.left) / r.width - 0.5
+          const py = (e.clientY - r.top) / r.height - 0.5
+          rotY(px * 12)
+          rotX(-py * 12)
+        }
+        const onLeave = () => {
+          rotX(0)
+          rotY(0)
+          yTo(0)
+        }
+
+        card.addEventListener('pointerenter', onEnter)
+        card.addEventListener('pointermove', onMove)
+        card.addEventListener('pointerleave', onLeave)
+        cleanups.push(() => {
+          card.removeEventListener('pointerenter', onEnter)
+          card.removeEventListener('pointermove', onMove)
+          card.removeEventListener('pointerleave', onLeave)
+          gsap.set(card, { clearProps: 'transform' })
+        })
+      })
+
+      return () => cleanups.forEach((fn) => fn())
+    })
+
     return () => mm.revert()
   }, [])
 
@@ -95,7 +139,7 @@ export default function Fleet() {
       <div className={styles.viewport} ref={viewportRef}>
         <div className={styles.track} ref={trackRef}>
           {FLEET.map((v) => (
-            <article className={styles.card} key={v.id}>
+            <article className={styles.card} key={v.id} data-cursor="ring">
               <span className={styles.cardId}>{v.id}</span>
               <div className={styles.cardVisual} aria-hidden="true">
                 <span className={styles.pulse} />

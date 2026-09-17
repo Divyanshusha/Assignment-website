@@ -76,12 +76,14 @@ export default function Services() {
 
       panels.forEach((panel, i) => {
         if (i === 0) return
+        // Scrub-tied movement: linear ease so the crossfade tracks scroll
+        // position 1:1 (consistent with the Fleet / Stages scrub convention).
         tl.fromTo(
           panel,
           { autoAlpha: 0, yPercent: 12 },
-          { autoAlpha: 1, yPercent: 0, ease: 'power2.out' },
+          { autoAlpha: 1, yPercent: 0, ease: 'none' },
           i,
-        ).to(panels[i - 1], { autoAlpha: 0, yPercent: -12, ease: 'power2.in' }, i)
+        ).to(panels[i - 1], { autoAlpha: 0, yPercent: -12, ease: 'none' }, i)
       })
     })
 

@@ -247,6 +247,14 @@ export default function GlobeScene() {
   const pointer = useRef({ x: 0, y: 0 })
   // Probe once on mount; if WebGL isn't available, skip the canvas entirely.
   const webglOk = useMemo(() => isWebGLAvailable(), [])
+  // Reduced-motion users get a single static frame instead of the continuous
+  // spin/parallax — the globe is still shown, it just holds still.
+  const reduced = useMemo(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    [],
+  )
 
   // Canvas has pointer-events:none (so it never eats hero clicks), so we read
   // the cursor from a passive window listener instead of canvas events.
@@ -268,6 +276,9 @@ export default function GlobeScene() {
     <Canvas
       camera={{ position: [0, 0, 6], fov: 42 }}
       dpr={[1, 1.6]}
+      // 'never' renders one frame then holds — no per-frame useFrame updates,
+      // so the whole scene is motionless for reduced-motion users.
+      frameloop={reduced ? 'never' : 'always'}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       style={{ pointerEvents: 'none' }}
     >

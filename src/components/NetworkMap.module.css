@@ -1,0 +1,229 @@
+.network {
+  position: relative;
+  background: var(--bg);
+  padding-block: clamp(50px, 6vh, 50px);
+}
+
+.header {
+  display: grid;
+  gap: 14px;
+  margin-bottom: clamp(20px, 2vh, 50px);
+}
+
+.header h2 {
+  max-width: 24ch;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  /* Deep navy infrastructure surface with soft cyan + orange depth glows. */
+  background:
+    radial-gradient(90% 70% at 32% 30%, rgba(76, 201, 240, 0.09), transparent 60%),
+    radial-gradient(80% 70% at 82% 82%, rgba(255, 106, 44, 0.07), transparent 60%),
+    radial-gradient(140% 140% at 50% 40%, rgba(20, 32, 56, 0.55), transparent 70%),
+    #080d17;
+  overflow: hidden;
+}
+
+/* ---------- parallax depth layers ---------- */
+
+.parallaxBack,
+.parallaxFront {
+  position: absolute;
+  inset: -4%; /* slight bleed so parallax never exposes an edge */
+  will-change: transform;
+}
+
+.parallaxFront {
+  z-index: 2;
+}
+
+.basemap,
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.fieldDot {
+  fill: #33456a;
+  opacity: 0.5;
+}
+
+/* ---------- routes ---------- */
+
+.route {
+  fill: none;
+  stroke-linecap: round;
+  transition:
+    opacity 0.35s ease,
+    stroke 0.35s ease;
+}
+
+/* muted-blue local spokes */
+.spoke {
+  stroke: #3f6f9e;
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+/* brighter cyan trunk lanes */
+.link {
+  stroke: var(--accent-2);
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+
+/* When a hub is hovered, fade everything back and light up its connections. */
+.dimmed .spoke,
+.dimmed .link {
+  opacity: 0.09;
+}
+.dimmed .node {
+  opacity: 0.16;
+}
+.dimmed .particle {
+  opacity: 0.12;
+}
+.spoke.hl {
+  opacity: 0.85;
+  stroke: var(--accent-2);
+}
+.link.hl {
+  opacity: 1;
+  stroke: var(--accent-2-soft);
+  stroke-width: 2;
+}
+.node.hl {
+  opacity: 1;
+}
+
+/* ---------- nodes + particles ---------- */
+
+.node {
+  fill: var(--accent-2-soft);
+  opacity: 0.8;
+  filter: drop-shadow(0 0 2.5px rgba(76, 201, 240, 0.7));
+  transition: opacity 0.35s ease;
+}
+
+.particle {
+  fill: #d9f6ff;
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(143, 227, 247, 1));
+}
+
+/* ---------- primary hubs ---------- */
+
+.hub {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.hub:focus-visible {
+  outline: 2px solid var(--accent-soft);
+  outline-offset: 4px;
+}
+
+.hubCore {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow:
+    0 0 0 3px rgba(255, 106, 44, 0.18),
+    0 0 14px 2px rgba(255, 106, 44, 0.55);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1;
+}
+
+.hub:hover .hubCore,
+.hubActive .hubCore {
+  transform: scale(1.35);
+}
+
+/* Soft pulsing glow behind each hub. */
+.hubGlow {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 106, 44, 0.55), transparent 70%);
+  animation: hubPulse 3s ease-in-out infinite;
+}
+
+@keyframes hubPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* ---------- labels ---------- */
+
+.label {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: rgba(234, 238, 245, 0.62);
+  pointer-events: none;
+}
+
+.label b {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent-2-soft);
+}
+
+.labelLeft {
+  left: auto;
+  right: calc(100% + 8px);
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .stage {
+    aspect-ratio: 3 / 4;
+  }
+  .hub {
+    width: 30px;
+    height: 30px;
+  }
+  .label {
+    font-size: 0.55rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+/* Reduced motion: freeze the hub glow. Routes/nodes stay fully visible (drawn),
+   just static — particles never start because their JS branch doesn't run. */
+@media (prefers-reduced-motion: reduce) {
+  .hubGlow {
+    animation: none;
+    opacity: 0.3;
+  }
+}
